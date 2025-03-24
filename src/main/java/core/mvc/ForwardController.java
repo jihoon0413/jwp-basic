@@ -1,19 +1,20 @@
-package next.controller;
-
-import java.io.IOException;
+package core.mvc;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
-import core.mvc.Controller;
+public class ForwardController implements Controller{
 
-public class HomeController implements Controller {
-    private static final long serialVersionUID = 1L;
+    private String url;
 
+    public ForwardController(String url) {
+        this.url = url;
+    }
 
     @Override
     public String execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        return "/index.jsp";
+        return url;
     }
 }
