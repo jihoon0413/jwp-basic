@@ -13,8 +13,8 @@ public abstract class JdbcTemplate {
         PreparedStatement pstmt = null;
         try {
             con = ConnectionManager.getConnection();
-            pstmt = con.prepareStatement(createQueryForInsert());
-            setValuesForInsert(user, pstmt);
+            pstmt = con.prepareStatement(createQuery());
+            setValues(user, pstmt);
 
             pstmt.executeUpdate();
         } finally {
@@ -28,8 +28,8 @@ public abstract class JdbcTemplate {
         }
     }
 
-    abstract void setValuesForInsert(User user, PreparedStatement pstmt) throws SQLException;
+    abstract void setValues(User user, PreparedStatement pstmt) throws SQLException;
 
-    abstract String createQueryForInsert();
+    abstract String createQuery();
 
 }
