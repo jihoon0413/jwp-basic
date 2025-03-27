@@ -22,6 +22,9 @@ public class UserDao {
                pstmt.setString(4, user.getEmail());
 
            }
+           Object mapRow(ResultSet rs) throws SQLException {
+               return null;
+           }
        };
        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
        jdbcTemplate.update(sql);
@@ -38,6 +41,9 @@ public class UserDao {
                pstmt.setString(3, user.getEmail());
                pstmt.setString(4, user.getUserId());
            }
+           Object mapRow(ResultSet rs) throws SQLException {
+               return null;
+           }
        };
        String sql = "UPDATE USERS set password = ?, name = ?, email = ? WHERE userId = ?";
 
@@ -47,7 +53,7 @@ public class UserDao {
 
 
     public List<User> findAll() throws SQLException {
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
 
             void setValues(PreparedStatement pstmt){}
 
@@ -58,12 +64,12 @@ public class UserDao {
         };
 
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return (List<User>) selectJdbcTemplate.query(sql);
+        return (List<User>) jdbcTemplate.query(sql);
     }
 
     public User findByUserId(String userId) throws SQLException {
 
-        SelectJdbcTemplate selectJdbcTemplate = new SelectJdbcTemplate() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate() {
             void setValues(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, userId);
             }
@@ -75,6 +81,6 @@ public class UserDao {
         };
 
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return (User) selectJdbcTemplate.queryForObject(sql);
+        return (User) jdbcTemplate.queryForObject(sql);
     }
 }
