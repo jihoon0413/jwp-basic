@@ -13,37 +13,41 @@ import next.model.User;
 public class UserDao {
 
     public void insert(User user) throws SQLException {
-       InsertJdbcTemplate insertJdbcTemplate = new InsertJdbcTemplate();
-       insertJdbcTemplate.insert(user, this);
+       InsertJdbcTemplate insertJdbcTemplate = new InsertJdbcTemplate() {
+           void setValuesForInsert(User user, PreparedStatement pstmt) throws SQLException {
+               pstmt.setString(1, user.getUserId());
+               pstmt.setString(2, user.getPassword());
+               pstmt.setString(3, user.getName());
+               pstmt.setString(4, user.getEmail());
+
+           }
+
+           String createQueryForInsert() {
+               return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+           }
+       };
+       insertJdbcTemplate.insert(user);
     }
 
-    void setValuesForInsert(User user, PreparedStatement pstmt) throws SQLException {
-        pstmt.setString(1, user.getUserId());
-        pstmt.setString(2, user.getPassword());
-        pstmt.setString(3, user.getName());
-        pstmt.setString(4, user.getEmail());
 
-    }
-
-    String createQueryForInsert() {
-        return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-    }
 
     public void update(User user) throws SQLException {
-       UpdateJdbcTemplate updateJdbcTemplate = new UpdateJdbcTemplate();
-       updateJdbcTemplate.update(user, this);
+       UpdateJdbcTemplate updateJdbcTemplate = new UpdateJdbcTemplate() {
+           void setValuesForUpdate(User user, PreparedStatement pstmt) throws SQLException {
+               pstmt.setString(1, user.getPassword());
+               pstmt.setString(2, user.getName());
+               pstmt.setString(3, user.getEmail());
+               pstmt.setString(4, user.getUserId());
+           }
+
+           String createQueryForUpdate() {
+               return "UPDATE USERS set password = ?, name = ?, email = ? WHERE userId = ?";
+           }
+       };
+       updateJdbcTemplate.update(user);
     }
 
-    void setValuesForUpdate(User user, PreparedStatement pstmt) throws SQLException {
-        pstmt.setString(1, user.getPassword());
-        pstmt.setString(2, user.getName());
-        pstmt.setString(3, user.getEmail());
-        pstmt.setString(4, user.getUserId());
-    }
 
-    String createQueryForUpdate() {
-        return "UPDATE USERS set password = ?, name = ?, email = ? WHERE userId = ?";
-    }
 
     public List<User> findAll() throws SQLException {
         Connection con = null;
