@@ -32,13 +32,6 @@ public class UserDao {
     public List<User> findAll() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-
-            }
-        };
-
         RowMapper<User> rowMapper = new RowMapper<User>() {
             @Override
             public User mapRow(ResultSet rs) throws SQLException {
@@ -54,13 +47,6 @@ public class UserDao {
     public User findByUserId(String userId) {
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, userId);
-            }
-        };
 
         RowMapper<User> rowMapper = new RowMapper<User>() {
             @Override
