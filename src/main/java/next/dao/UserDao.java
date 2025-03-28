@@ -61,16 +61,16 @@ public class UserDao {
             }
         };
 
-        RowMapper rowMapper = new RowMapper() {
+        RowMapper<User> rowMapper = new RowMapper<User>() {
             @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
+            public User mapRow(ResultSet rs) throws SQLException {
                 return new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
                         rs.getString("email"));
             }
         };
 
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return (List<User>) jdbcTemplate.query(sql, pss, rowMapper);
+        return jdbcTemplate.query(sql, pss, rowMapper);
     }
 
     public User findByUserId(String userId) {
@@ -84,15 +84,15 @@ public class UserDao {
             }
         };
 
-        RowMapper rowMapper = new RowMapper() {
+        RowMapper<User> rowMapper = new RowMapper<User>() {
             @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
+            public User mapRow(ResultSet rs) throws SQLException {
                 return new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
                         rs.getString("email"));
             }
         };
 
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return (User) jdbcTemplate.queryForObject(sql, pss, rowMapper);
+        return jdbcTemplate.queryForObject(sql, pss, rowMapper);
     }
 }
