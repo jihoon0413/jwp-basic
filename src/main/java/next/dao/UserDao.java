@@ -32,32 +32,22 @@ public class UserDao {
     public List<User> findAll() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-        RowMapper<User> rowMapper = new RowMapper<User>() {
-            @Override
-            public User mapRow(ResultSet rs) throws SQLException {
-                return new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-                        rs.getString("email"));
-            }
-        };
-
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return jdbcTemplate.query(sql, rowMapper);
+        return jdbcTemplate.query(sql, (ResultSet rs) -> {
+            return new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
+                    rs.getString("email"));
+        });
     }
 
     public User findByUserId(String userId) {
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
-        RowMapper<User> rowMapper = new RowMapper<User>() {
-            @Override
-            public User mapRow(ResultSet rs) throws SQLException {
-                return new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-                        rs.getString("email"));
-            }
-        };
-
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return jdbcTemplate.queryForObject(sql, rowMapper, userId);
+        return jdbcTemplate.queryForObject(sql, (ResultSet rs) -> {
+            return new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
+                    rs.getString("email"));
+        }, userId);
     }
 
 
