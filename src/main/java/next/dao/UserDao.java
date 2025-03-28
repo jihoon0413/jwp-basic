@@ -1,19 +1,18 @@
 package next.dao;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import core.jdbc.ConnectionManager;
+import core.jdbc.JdbcTemplate;
+import core.jdbc.PreparedStatementSetter;
+import core.jdbc.RowMapper;
 import next.model.User;
-import org.h2.command.Prepared;
 
 public class UserDao {
 
-    public void insert(User user) throws SQLException {
+    public void insert(User user) {
        JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
        PreparedStatementSetter pss = new PreparedStatementSetter() {
@@ -32,7 +31,7 @@ public class UserDao {
 
 
 
-    public void update(User user) throws SQLException {
+    public void update(User user) {
 
        JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
@@ -52,7 +51,7 @@ public class UserDao {
 
 
 
-    public List<User> findAll() throws SQLException {
+    public List<User> findAll() {
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         PreparedStatementSetter pss = new PreparedStatementSetter() {
@@ -74,7 +73,7 @@ public class UserDao {
         return (List<User>) jdbcTemplate.query(sql, pss, rowMapper);
     }
 
-    public User findByUserId(String userId) throws SQLException {
+    public User findByUserId(String userId) {
 
         JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
