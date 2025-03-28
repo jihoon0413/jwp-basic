@@ -25,11 +25,7 @@ public class LoginController implements Controller {
         UserDao userDao = new UserDao();
 
         User user = null;
-        try{
-            user = userDao.findByUserId(id);
-        } catch (SQLException e) {
-            log.error(e.getMessage());
-        }
+        user = userDao.findByUserId(id);
 
         if(user == null) {
             req.setAttribute("loginFailed", true);
