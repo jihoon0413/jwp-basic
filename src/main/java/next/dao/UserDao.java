@@ -14,19 +14,8 @@ public class UserDao {
 
     public void insert(User user) {
        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
-       PreparedStatementSetter pss = new PreparedStatementSetter() {
-           @Override
-           public void setValues(PreparedStatement pstmt) throws SQLException {
-               pstmt.setString(1, user.getUserId());
-               pstmt.setString(2, user.getPassword());
-               pstmt.setString(3, user.getName());
-               pstmt.setString(4, user.getEmail());
-           }
-       };
-
        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-       jdbcTemplate.update(sql, pss);
+       jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
 
@@ -34,19 +23,8 @@ public class UserDao {
     public void update(User user) {
 
        JdbcTemplate jdbcTemplate = new JdbcTemplate();
-
-       PreparedStatementSetter pss = new PreparedStatementSetter() {
-           @Override
-           public void setValues(PreparedStatement pstmt) throws SQLException {
-               pstmt.setString(1, user.getPassword());
-               pstmt.setString(2, user.getName());
-               pstmt.setString(3, user.getEmail());
-               pstmt.setString(4, user.getUserId());
-           }
-       };
        String sql = "UPDATE USERS set password = ?, name = ?, email = ? WHERE userId = ?";
-
-       jdbcTemplate.update(sql, pss);
+       jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 
 
@@ -56,7 +34,7 @@ public class UserDao {
 
         PreparedStatementSetter pss = new PreparedStatementSetter() {
             @Override
-            public void setValues(PreparedStatement pstmt) throws SQLException {
+            public void setParameters(PreparedStatement pstmt) throws SQLException {
 
             }
         };
@@ -70,7 +48,7 @@ public class UserDao {
         };
 
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return jdbcTemplate.query(sql, pss, rowMapper);
+        return jdbcTemplate.query(sql, rowMapper);
     }
 
     public User findByUserId(String userId) {
@@ -79,7 +57,7 @@ public class UserDao {
 
         PreparedStatementSetter pss = new PreparedStatementSetter() {
             @Override
-            public void setValues(PreparedStatement pstmt) throws SQLException {
+            public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, userId);
             }
         };
@@ -93,6 +71,9 @@ public class UserDao {
         };
 
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        return jdbcTemplate.queryForObject(sql, pss, rowMapper);
+        return jdbcTemplate.queryForObject(sql, rowMapper, userId);
     }
+
+
+
 }
