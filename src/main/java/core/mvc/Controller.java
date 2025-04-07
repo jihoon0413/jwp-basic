@@ -6,5 +6,5 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface Controller {
-    String execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException;
+    ModelAndView execute(HttpServletRequest req, HttpServletResponse res) throws Exception;
 }

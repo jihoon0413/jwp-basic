@@ -1,24 +1,27 @@
-package next.controller;
+package next.controller.user;
 
 import core.db.DataBase;
+import core.mvc.AbstractController;
 import core.mvc.Controller;
+import core.mvc.ModelAndView;
+import next.controller.UserSessionUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ListUserController implements Controller {
+public class ListUserController extends AbstractController {
     private static final long serialVersionUID = 1L;
 
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         if(!UserSessionUtils.isLogined(req.getSession())) {
-            return "redirect:/users/loginForm";
+            return jspView("redirect:/users/loginForm");
         }
 
         req.setAttribute("users", DataBase.findAll());
-        return "/user/list.jsp";
+        return jspView("/user/list.jsp");
     }
 }

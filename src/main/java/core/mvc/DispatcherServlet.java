@@ -27,16 +27,14 @@ public class DispatcherServlet extends HttpServlet {
     @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String url = req.getRequestURI();
+        logger.info("request : {}", url);
         Controller controller = rm.getController(url);
+        ModelAndView modelAndView;
 
         try {
-            String viewName = controller.execute(req, res);
-            if(viewName.startsWith(DEFAULT_REDIRECT_PREFIX)) {
-                res.sendRedirect(viewName.substring(DEFAULT_REDIRECT_PREFIX.length()));
-                return;
-            }
-            RequestDispatcher rd = req.getRequestDispatcher(viewName);
-            rd.forward(req, res);
+            modelAndView = controller.execute(req, res);
+            View view = modelAndView.getView();
+            view.render(modelAndView.getModel(), req, res);
         } catch (Throwable e) {
             logger.error("Exception : %s", e);
             throw new ServletException(e.getMessage());

@@ -6,14 +6,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import core.mvc.Controller;
+import core.mvc.AbstractController;
+import core.mvc.ModelAndView;
+import next.dao.QuestionDao;
 
-public class HomeController implements Controller {
+public class HomeController extends AbstractController {
     private static final long serialVersionUID = 1L;
+    private QuestionDao questionDao = new QuestionDao();
 
 
     @Override
-    public String execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        return "/index.jsp";
+    public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
+        return jspView("index.jsp").addObject("questions", questionDao.findAll());
     }
 }
