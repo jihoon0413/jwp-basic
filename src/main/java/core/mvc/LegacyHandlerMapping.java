@@ -7,7 +7,7 @@ import next.controller.user.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RequestMapping {
+public class LegacyHandlerMapping {
     private static Map<String, Controller> controllers = new HashMap<>();
 
     static {
