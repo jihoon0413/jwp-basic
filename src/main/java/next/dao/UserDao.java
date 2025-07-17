@@ -8,8 +8,9 @@ import next.model.User;
 
 public class UserDao {
 
+    private final JdbcTemplate jdbcTemplate = JdbcTemplate.getInstance();
+
     public void insert(User user) {
-       JdbcTemplate jdbcTemplate = new JdbcTemplate();
        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
        jdbcTemplate.update(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
@@ -18,7 +19,6 @@ public class UserDao {
 
     public void update(User user) {
 
-       JdbcTemplate jdbcTemplate = new JdbcTemplate();
        String sql = "UPDATE USERS set password = ?, name = ?, email = ? WHERE userId = ?";
        jdbcTemplate.update(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
@@ -26,7 +26,6 @@ public class UserDao {
 
 
     public List<User> findAll() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         String sql = "SELECT userId, password, name, email FROM USERS";
         return jdbcTemplate.query(sql, (ResultSet rs) -> {
@@ -37,7 +36,6 @@ public class UserDao {
 
     public User findByUserId(String userId) {
 
-        JdbcTemplate jdbcTemplate = new JdbcTemplate();
 
         String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
         return jdbcTemplate.queryForObject(sql, (ResultSet rs) -> {

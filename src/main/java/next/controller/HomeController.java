@@ -12,7 +12,7 @@ import next.dao.QuestionDao;
 
 public class HomeController extends AbstractController {
     private static final long serialVersionUID = 1L;
-    private QuestionDao questionDao = new QuestionDao();
+    private final QuestionDao questionDao = QuestionDao.getInstance();
 
 
     @Override

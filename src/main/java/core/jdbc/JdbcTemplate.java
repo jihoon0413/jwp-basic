@@ -11,6 +11,16 @@ import java.util.List;
 
 public class JdbcTemplate {
 
+    private static JdbcTemplate jdbcTemplate;
+    private JdbcTemplate() {}
+
+    public static JdbcTemplate getInstance() {
+        if(jdbcTemplate == null) {
+            return new JdbcTemplate();
+        }
+        return jdbcTemplate;
+    }
+
     public void update(String sql, Object... parameters) {
         update(sql, createPreparedStatementSetter(parameters));
     }
