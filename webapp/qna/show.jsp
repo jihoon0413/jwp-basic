@@ -13,9 +13,14 @@
 <div class="container" id="main">
 	<div class="col-md-12 col-sm-12 col-lg-10 col-lg-offset-1">
 		<div class="panel panel-default">
+		    <c:if test="${not empty errorMessage}">
+                <div class="alert alert-danger" role="alert">${errorMessage}</div>
+            </c:if>
+
 			<header class="qna-header">
 				<h2 class="qna-title">${question.title}</h2>
 			</header>
+
 			<div class="content-main">
 				<article class="article">
 					<div class="article-header">
@@ -25,7 +30,7 @@
 						<div class="article-header-text">
 							<a href="/users/92/kimmunsu" class="article-author-name">${question.writer}</a>
 							<a href="/questions/413" class="article-header-time" title="퍼머링크">
-								<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${question.createdDate}" />
+								<fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${question.createDate}" />
 								<i class="icon-link"></i>
 							</a>
 						</div>
@@ -36,16 +41,16 @@
 					<div class="article-util">
 						<ul class="article-util-list">
 							<li>
-								<a class="link-modify-article" href="#">수정</a>
+								<a class="link-modify-article" href="/qna/updateForm?questionId=${question.questionId}">수정</a>
 							</li>
 							<li>
-								<form class="form-delete" action="#" method="POST">
-									<input type="hidden" name="_method" value="DELETE">
+								<form class="form-delete" action="/qna/delete?questionId=${question.questionId}" method="POST">
+									<input type="hidden" name="_method" value="${question.questionId}">
 									<button class="link-delete-article" type="submit">삭제</button>
 								</form>
 							</li>
 							<li>
-								<a class="link-modify-article" href="/">목록</a>
+								<a class="link-modify-article" href="/home">목록</a>
 							</li>
 						</ul>
 					</div>
@@ -53,7 +58,7 @@
 
 				<div class="qna-comment">
 					<div class="qna-comment-slipp">
-						<p class="qna-comment-count"><strong>${question.countOfComment}</strong>개의 의견</p>
+						<p class="qna-comment-count"><strong>${question.countOfAnswer}</strong>개의 의견</p>
 						<div class="qna-comment-slipp-articles">
 							<c:forEach items="${answers}" var="each">
 							<article class="article">
@@ -63,8 +68,8 @@
 									</div>
 									<div class="article-header-text">
 										${each.writer}
-										<div class="article-header-time"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${each.createdDate}" /></div>
-									</div>
+										<div class="article-header-time"><fmt:formatDate pattern="yyyy-MM-dd HH:mm:ss" value="${each.createDate}" /></div>
+                                    </div>
 								</div>
 								<div class="article-doc comment-doc">
 									<p>${each.contents}</p>
@@ -74,16 +79,17 @@
 										<li>
 											<a class="link-modify-article" href="/api/qna/updateAnswer?answerId=${each.answerId}">수정</a>
 										</li>
-										<li>
-											<form class="form-delete" action="/api/qna/deleteAnswer" method="POST">
-												<input type="hidden" name="answerId" value="${each.answerId}" />
-												<button type="submit" class="link-delete-article">삭제</button>
-											</form>
+                                        <li>
+                                            <form class="form-delete2" action="/api/qna/deleteAnswer?answerId=${each.answerId}" method="POST">
+                                                <input type="hidden" name="answerId" value="${each.answerId}">
+                                                <button type="submit" class="link-delete-article">삭제</button>
+                                            </form>
 										</li>
 									</ul>
 								</div>
 							</article>
                             </c:forEach>
+
 							<div class="answerWrite">
                             <form name="answer" method="post">
 								<input type="hidden" name="questionId" value="${question.questionId}">
