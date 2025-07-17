@@ -38,8 +38,12 @@ public class Answer {
         return questionId;
     }
 
+    public Date getCreateDate() {
+        return createDate;
+    }
+
     public long getTimeFromCreateDate() {
-        return this.createDate.getTime();
+        return createDate.getTime();
     }
 
     @Override
