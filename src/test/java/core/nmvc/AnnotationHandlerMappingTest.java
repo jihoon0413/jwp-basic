@@ -1,20 +1,21 @@
 package core.nmvc;
 
-import static org.junit.Assert.*;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 
 import core.mvc.ModelAndView;
 
-public class AnnotationHandlerMappingTest {
-    private AnnotationHandlerMapping handlerMapping;
-    private MockHttpServletResponse response;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-    @Before
-    public void setup() {
+public class AnnotationHandlerMappingTest {
+    private static AnnotationHandlerMapping handlerMapping;
+    private static MockHttpServletResponse response;
+
+    @BeforeAll
+    public static void setup() {
         handlerMapping = new AnnotationHandlerMapping("core.nmvc");
         handlerMapping.initialize();
 

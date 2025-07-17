@@ -2,18 +2,19 @@ package core.nmvc;
 
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ControllerScannerTest {
     private static final Logger logger = LoggerFactory.getLogger(ControllerScannerTest.class);
 
-    private ControllerScanner cf;
+    private static ControllerScanner cf;
 
-    @Before
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         cf = new ControllerScanner("core.nmvc");
     }
 
