@@ -1,13 +1,15 @@
 package core.mvc;
 
+import core.nmvc.HandlerMapping;
 import next.controller.*;
 import next.controller.qna.*;
 import next.controller.user.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LegacyHandlerMapping {
+public class LegacyHandlerMapping implements HandlerMapping {
     private static Map<String, Controller> controllers = new HashMap<>();
 
     static {
@@ -35,5 +37,10 @@ public class LegacyHandlerMapping {
 
     public Controller getController(String key) {
         return controllers.get(key);
+    }
+
+    @Override
+    public Object getHandler(HttpServletRequest request) {
+        return controllers.get(request.getRequestURI());
     }
 }
