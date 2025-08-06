@@ -26,7 +26,7 @@ public class CreateUserController extends AbstractController {
 
         log.debug("User : {}", user);
 
-        UserDao userDao = new UserDao();
+        UserDao userDao = UserDao.getInstance();
         userDao.insert(user);
         return jspView("redirect:/");
     }

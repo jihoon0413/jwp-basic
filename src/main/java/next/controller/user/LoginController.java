@@ -23,7 +23,7 @@ public class LoginController extends AbstractController {
     public ModelAndView execute(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         String id = req.getParameter("userId");
         String password = req.getParameter("password");
-        UserDao userDao = new UserDao();
+        UserDao userDao = UserDao.getInstance();
 
         User user = null;
         user = userDao.findByUserId(id);
