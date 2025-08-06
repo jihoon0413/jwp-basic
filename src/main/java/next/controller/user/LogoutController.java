@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-@WebServlet("/users/logout")
 public class LogoutController extends AbstractController {
     private static final long serialVersionUID = 1L;
 

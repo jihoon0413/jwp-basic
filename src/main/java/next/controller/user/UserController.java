@@ -3,8 +3,6 @@ package next.controller.user;
 import core.annotation.Controller;
 import core.annotation.RequestMapping;
 import core.annotation.RequestMethod;
-import core.db.DataBase;
-import core.mvc.AbstractController;
 import core.mvc.ModelAndView;
 import core.nmvc.AbstractNewController;
 import next.controller.UserSessionUtils;
@@ -48,7 +46,7 @@ public class UserController extends AbstractNewController {
         return jspView("/user/form.jsp");
     }
 
-    @RequestMapping(value = "/users/form", method = RequestMethod.POST)
+    @RequestMapping(value = "/users/create", method = RequestMethod.POST)
     public ModelAndView create(HttpServletRequest req, HttpServletResponse res) {
         User user = new User(req.getParameter("userId"), req.getParameter("password"), req.getParameter("name"), req.getParameter("email"));
 
@@ -115,6 +113,4 @@ public class UserController extends AbstractNewController {
         session.removeAttribute("user");
         return jspView("redirect:/home");
     }
-
-
 }
