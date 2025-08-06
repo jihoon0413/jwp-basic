@@ -1,6 +1,7 @@
 package core.nmvc;
 
 import core.mvc.Controller;
+//import core.mvc.LegacyHandlerMapping;
 import core.mvc.LegacyHandlerMapping;
 import core.mvc.ModelAndView;
 import core.mvc.View;
@@ -26,12 +27,12 @@ public class DispatcherServlet extends HttpServlet {
     public void init() throws ServletException {
         log.info("DispatcherServlet init called");
 
-        LegacyHandlerMapping lhm = new LegacyHandlerMapping();
         AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("next.controller");
+        LegacyHandlerMapping lhm = new LegacyHandlerMapping();
         ahm.initialize();
-
-        mappings.add(lhm);
+        lhm.initialize();
         mappings.add(ahm);
+        mappings.add(lhm);
     }
 
     @Override
@@ -46,6 +47,7 @@ public class DispatcherServlet extends HttpServlet {
             throw new IllegalArgumentException("존재하지 않는 url 입니다.");
         }
 
+
         if(controller instanceof Controller) {
             try {
                 ModelAndView mav = ((Controller) controller).execute(req,res);
@@ -57,7 +59,14 @@ public class DispatcherServlet extends HttpServlet {
                 throw new ServletException(e.getMessage());
             }
         } else if(controller instanceof HandlerExecution) {
-            ((HandlerExecution) controller).handle(req, res);
+            ModelAndView mav = ((HandlerExecution) controller).handle(req, res);
+            View view = mav.getView();
+            try {
+                view.render(mav.getModel(),req,res);
+            } catch (Exception e) {
+                log.error("Exception : %s", e);
+                throw new ServletException(e.getMessage());
+            }
         } else {
             throw new IllegalArgumentException();
         }
@@ -74,5 +83,12 @@ public class DispatcherServlet extends HttpServlet {
         return null;
     }
 
+    private ModelAndView execute(Object handler, HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if(handler instanceof Controller) {
+            return ((Controller) handler).execute(request, response);
+        } else {
+            return ((HandlerExecution)handler).handle(request, response);
+        }
+    }
 
 }
