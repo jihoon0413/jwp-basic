@@ -47,28 +47,16 @@ public class DispatcherServlet extends HttpServlet {
             throw new IllegalArgumentException("존재하지 않는 url 입니다.");
         }
 
-
-        if(controller instanceof Controller) {
-            try {
-                ModelAndView mav = ((Controller) controller).execute(req,res);
+        try{
+            ModelAndView mav = execute(controller, req, res);
+            if(mav != null) {
                 View view = mav.getView();
-                view.render(mav.getModel(),req, res);
+                view.render(mav.getModel(), req, res);
+            }
 
-            } catch (Exception e) {
-                log.error("Exception : %s", e);
-                throw new ServletException(e.getMessage());
-            }
-        } else if(controller instanceof HandlerExecution) {
-            ModelAndView mav = ((HandlerExecution) controller).handle(req, res);
-            View view = mav.getView();
-            try {
-                view.render(mav.getModel(),req,res);
-            } catch (Exception e) {
-                log.error("Exception : %s", e);
-                throw new ServletException(e.getMessage());
-            }
-        } else {
-            throw new IllegalArgumentException();
+        } catch (Throwable e) {
+            log.error("Exception : {}", e.getMessage());
+            throw new ServletException(e.getMessage());
         }
 
     }
